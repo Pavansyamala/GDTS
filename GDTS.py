@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 class GDTS:
 
     def __init__(self, turn_rate, airspeed):
-        self.turn_radius = airspeed / turn_rate
+        self.turn_radius = (airspeed * 180) / (turn_rate* 3.14)
         self.turn_rate = turn_rate
         self.airspeed = airspeed
         self.strength = 10  # Strength at the Transmitters Location
@@ -150,6 +150,7 @@ class GDTS:
         plt.plot(x , y , 'g')
         plt.annotate("Rec" , xy = (self.initial_rec_loc[0]-2 , self.initial_rec_loc[1]-2))
         plt.annotate("Tran" , xy = (self.trans_loc[0] , self.trans_loc[1]))
+        plt.annotate(f"Turn Radius : {self.turn_radius}" , xy = (10 ,40 ))
         plt.xlabel('X - coordinates ')
         plt.ylabel('Y - coordinates ')
         plt.title('Total Path Travelled Using GDTS ')
