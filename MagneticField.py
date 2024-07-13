@@ -1,4 +1,5 @@
 import numpy as np 
+import matplotlib.pyplot as plt
 
 
 class MagneticField:
@@ -36,12 +37,50 @@ class MagneticField:
         r = np.dot(R_i_to_t, r)
         A = np.array([2*r[0]**2 - r[1]**2 - r[2]**2 , 3*r[0]*r[1] ,3*r[0]*r[2] ]).reshape(-1,1) 
         Am = np.dot(R_t_to_i, A)
-        Am_x = A[0, 0] 
-        Am_y = A[1, 0] 
-        Am_z = A[2, 0] 
+        Am_x = Am[0, 0] 
+        Am_y = Am[1, 0] 
+        Am_z = Am[2, 0] 
         m_mag = np.linalg.norm(m_vec)
         rd = np.linalg.norm(r)
         H = np.array([(m_mag/(4*np.pi*rd**5))*Am_x, (1/(4*np.pi*rd**5))*Am_y, (1/(4*np.pi*rd**5))*Am_z])
         R_i_to_r = np.transpose(R_r_to_i)
         Hb = np.dot(R_i_to_r, H)
-        return Hb 
+        return Hb  
+    
+    
+
+if __name__ == '__main__':
+
+    pt = np.array([5,5,2])
+    ori_r = [45 , 45 , 45]
+    ori_t = [45 , 45 , 45]
+    pr = []
+    field = []
+
+    X = np.linspace(0,10,100)
+    Y = np.linspace(0,10,100)
+
+    field = []
+    pr = []
+
+    count = 1
+
+    for x in X: 
+        for y in Y: 
+            obj = MagneticField([x,y,2] , ori_r , pt , ori_t) 
+            pr.append([x,y,2]) 
+            field.append(obj.magnetic_field)
+            print(count) 
+            count += 1   
+
+    pr = np.array(pr)
+    field = np.array(field) 
+
+    plt.figure(figsize=(8, 8))
+    plt.quiver(pr[:,0], pr[:,1],field[:,0], field[:,1], color='b', scale=20)
+    plt.title('Magnetic Field (Bx, By)')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.grid()
+    plt.show()
+
